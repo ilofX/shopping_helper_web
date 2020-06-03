@@ -11,8 +11,6 @@
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
-    "jquery": "^3.5.1",
-    "materialize-css": "^1.0.0",
     "morgan": "~1.9.1"
   }
 }
