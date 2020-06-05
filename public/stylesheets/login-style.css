@@ -1,0 +1,20 @@
+body{
+    background-image: url('/imgs/login-background.png');
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover;
+}
+
+#login-panel{
+    background-color: white;
+    border-radius: 1vw;
+    padding: 5vw;
+    margin-top: 25vh;
+    text-align: center;
+}
+
+
+
+input{
+    margin-bottom: 5vh !important;
+
+}
