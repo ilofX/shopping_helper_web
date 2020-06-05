@@ -14,11 +14,11 @@ document.addEventListener('DOMContentLoaded', function() {
             type: "POST",
             url: "/login",
             data: data,
+            dataType: "json",
             success: (data, textStatus) => {
                 console.log(data, textStatus);
-            },
-            dataType: "json"
-          });
+            }
+        });
     
     });
 

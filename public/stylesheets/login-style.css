@@ -1,20 +1,27 @@
 body{
-    background-image: url('/imgs/login-background.png');
-    background-repeat: no-repeat; /* Do not repeat the image */
+    background-image: url('../imgs/login-background.png');
+    background-repeat: no-repeat;
+    background-position: center;
     background-size: cover;
+    height: 100vh;
 }
 
-#login-panel{
+#login-panel {
     background-color: white;
     border-radius: 1vw;
-    padding: 5vw;
-    margin-top: 25vh;
-    text-align: center;
+    padding: 3vw;
 }
 
+.app_primary_color {
+    background-color: #99cc66 !important;
+    color: black;
+}
 
+.h100 {
+    height: 100vh;
+    margin-bottom: 0;
+}
 
 input{
     margin-bottom: 5vh !important;
-
 }
