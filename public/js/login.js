@@ -1,5 +1,3 @@
-
-
 document.addEventListener('DOMContentLoaded', function() {
 
     // submit button handler
@@ -12,17 +10,25 @@ document.addEventListener('DOMContentLoaded', function() {
     
         $.ajax({
             type: "POST",
-            url: "/login",
+            url: "/login_api",
             data: data,
+            dataType: "json",
             success: (data, textStatus) => {
                 console.log(data, textStatus);
-            },
-            dataType: "json"
-          });
+                if (data.status) {
+                    document.getElementById("login-message").innerHTML = data.message;
+                    document.getElementById("login-message").classList.remove('fail');
+                    document.getElementById("login-message").classList.add('success');
+                    window.location.href = "/dash";
+                } else {
+                    document.getElementById("login-message").innerHTML = data.message;
+                    document.getElementById("login-message").classList.remove('success');
+                    document.getElementById("login-message").classList.add('fail');
+                }
+            }
+        });
     
     });
-
-
 
 
 });
