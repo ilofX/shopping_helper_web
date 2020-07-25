@@ -1,0 +1,59 @@
+.app_primary_color {
+    background-color: #99cc66 !important;
+    color: black;
+}
+
+nav.top-nav {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+.padding-2 {
+    padding-right: 10px !important;
+}
+
+@media only screen and (max-width: 992px) {
+    .padding-2 {
+        padding-right: 0;
+    }
+}
+
+/*FIXED SIDENAV OFFSET*/
+.navbar, main, footer {
+    padding-left: 300px;
+}
+
+@media only screen and (max-width: 992px) {
+    .navbar, main, footer {
+        padding-left: 0;
+    }
+}
+
+/*FIXED SIDENAV OFFSET*/
+.center_logo_sidenav {
+    display: block;
+    margin: auto;
+    width: 120px;
+}
+
+.user_font_sidenav {
+    font-size: 1.8em !important;
+}
+
+.sidenav_font {
+    font-size: 1em !important;
+}
+
+.margin-bot-20 {
+    margin-bottom: 20px !important;
+}
+
+.hidden-titles {
+    position: relative;
+    top: -50px;
+}
+
+.tabs_content {
+    padding-top: 100px;
+}

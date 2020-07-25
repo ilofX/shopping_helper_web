@@ -18,7 +18,12 @@ router.post('/login_api', function (req, res, next) {
         password: 'qNqz3PKKZ',
         database: 'shopping_helper'
     });
-    connection.connect();
+    connection.connect(function (err) {
+        if (err) {
+            res.json({"status": false, "message": err});
+
+        }
+    });
 
     connection.query("SELECT ID,Username,Password FROM Users WHERE Username = ?", [
         req.body.username
@@ -29,10 +34,9 @@ router.post('/login_api', function (req, res, next) {
                 "status": true,
                 "message": "Welcome " + result[0].Username
             });
-            req.session.regenerate(function (err) {
-                // will have a new session here
-            });
-            req.session.username = req.body.username;
+            //req.session.regenerate(function (err) {
+            //});
+            //req.session.username = req.body.username;
         } else {
             res.json({
                 "status": false,

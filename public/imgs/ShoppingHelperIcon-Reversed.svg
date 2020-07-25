@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+    <defs>
+        <style>.cls-1{fill:none;}.cls-2{fill:#393;}</style>
+    </defs>
+    <title>ShoppingHelperIcon-Reversed</title>
+    <g id="BackGround">
+        <rect class="cls-1" width="1024" height="1024"/>
+    </g>
+    <g id="Icon">
+        <rect class="cls-2" x="49.98" y="330.66" width="301.12" height="58.43"/>
+        <circle class="cls-2" cx="49.98" cy="359.88" r="29.21"/>
+        <circle class="cls-2" cx="351.1" cy="359.88" r="29.21"/>
+        <rect class="cls-2" x="146.2" y="462.13" width="301.12" height="58.43"/>
+        <circle class="cls-2" cx="146.2" cy="491.34" r="29.21"/>
+        <circle class="cls-2" cx="447.33" cy="491.34" r="29.21"/>
+        <rect class="cls-2" x="101.26" y="593.59" width="301.12" height="58.43"/>
+        <circle class="cls-2" cx="101.26" cy="622.81" r="29.21"/>
+        <circle class="cls-2" cx="402.38" cy="622.81" r="29.21"/>
+        <ellipse class="cls-2" cx="408.34" cy="272.23" rx="29.37" ry="29.21"/>
+        <path class="cls-2"
+              d="M833.42,564.38a58.15,58.15,0,0,0,51.12-30.09l104.59-189.6c10.81-19.29-3.21-43.24-25.42-43.24H531.34L503.88,243H408.34v58.43h58.43L572,523.19l-39.44,71.28c-21.33,39.15,6.72,86.77,51.12,86.77H934.21V622.81H583.63l32.14-58.43ZM559.09,359.88h355L833.42,506H628.33Zm24.54,350.57c-32.13,0-58.13,26.3-58.13,58.43a58.28,58.28,0,1,0,58.13-58.43Zm292.15,0a58.43,58.43,0,1,0,58.43,58.43A58.36,58.36,0,0,0,875.78,710.45Z"/>
+        <circle class="cls-2" cx="935.4" cy="651.96" r="29.28"/>
+    </g>
+</svg>

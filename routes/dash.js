@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET dashboard page. */
 router.get('/', function(req, res, next) {
-  res.render('dash', {title: 'Shopping Helper | ' + ''});
+  res.render('dash', {title: 'Shopping Helper', user: 'Administrator'});
 });
 
 module.exports = router;

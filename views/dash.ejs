@@ -1,17 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title><%= title %></title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link type="text/css" rel="stylesheet" href="/stylesheets/materialize.min.css" media="screen,projection"/>
-  <link rel='stylesheet' href='/stylesheets/style.css'/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/stylesheets/materialize.min.css" media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/dashStyle.css" media="screen,projection"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-<h1><%= title %></h1>
-<p>Welcome to <%= title %></p>
+<header>
+    <div class="navbar-fixed">
+        <nav class="navbar top-nav app_primary_color">
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo right black-text padding-2"><%= title %> Web</a>
+                <a href="#" data-target="sidenav-left" class="sidenav-trigger left"><i
+                            class="material-icons black-text">menu</i></a>
+            </div>
+        </nav>
+    </div>
 
-<script type="text/javascript" src="/js/materialize.min.js"></script>
+    <ul id="sidenav-left" class="sidenav sidenav-fixed app_primary_color">
+        <li>
+            <div class="user-view margin-bot-20">
+                <a href="#"><img class="center_logo_sidenav sidenav-close" src="imgs/ShoppingHelperIcon-black.svg"></a>
+                <a href="#" class="dropdown-trigger" data-target="user-dropdown"><span
+                            class="black-text name user_font_sidenav">Administrator<i class="material-icons right">arrow_drop_down</i></span></a>
+            </div>
+        </li>
+        <li>
+            <div class="divider black"></div>
+        </li>
+        <li><a class="sidenav-close" id="#pList_btn" href="#pList"><i class="material-icons">list</i>Products List</a>
+        </li>
+        <li><a class="sidenav-close" id="#sList_btn" href="#sList"><i class="material-icons">storefront</i>Shops
+                List</a></li>
+        <li>
+            <div class="divider black"></div>
+        </li>
+        <li><a class="sidenav-close" id="#nProduct_btn" href="#nProduct"><i class="material-icons">add</i>New
+                Product</a></li>
+        <li><a class="sidenav-close" id="#nShop_btn" href="#nShop"><i class="material-icons">add</i>New Shop</a></li>
+        </li>
+
+        <ul id="user-dropdown" class="dropdown-content">
+            <li><a class="sidenav-close" id="api_btn">Api Keys</a></li>
+            <li class="divider"></li>
+            <li><a class="sidenav-close" id="logout_btn">Logout</a></li>
+        </ul>
+
+    </ul>
+</header>
+<main>
+    <div class="container hidden-titles">
+        <div class="row">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s3"><a href="#pList">Products List</a></li>
+                    <li class="tab col s3"><a href="#sList">Shops List</a></li>
+                    <li class="tab col s3"><a href="#nProduct">New Prduct</a></li>
+                    <li class="tab col s3"><a href="#nShop">New Shop</a></li>
+                </ul>
+            </div>
+
+            <div id="pList" class="col s12">
+                <div class="tabs_content">
+                    <h1><%= title %></h1>
+                    <p>Welcome to <%= title %></p>
+                </div>
+            </div>
+
+            <div id="sList" class="col s12">
+                <div class="tabs_content">
+                    Test 2
+                </div>
+            </div>
+
+            <div id="nProduct" class="col s12">
+                <div class="tabs_content">
+                    Test 3
+                </div>
+            </div>
+
+            <div id="nShop" class="col s12">
+                <div class="tabs_content">
+                    Test 4
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
 <script type="text/javascript" src="/js/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="/js/materialize.min.js"></script>
+<script type="text/javascript" src="/js/dash.js"></script>
 </body>
 </html>
