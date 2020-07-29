@@ -37,8 +37,12 @@ nav.top-nav {
     width: 120px;
 }
 
-.user_font_sidenav {
-    font-size: 1.8em !important;
+.appname_font_sidenav {
+    font-size: 1.5em !important;
+}
+
+.user_font_topnav {
+    font-size: 1.6em !important;
 }
 
 .sidenav_font {
@@ -55,5 +59,18 @@ nav.top-nav {
 }
 
 .tabs_content {
-    padding-top: 100px;
+    padding-top: 45px;
+}
+
+.shortened {
+
+}
+
+.submit_btn {
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.dropdown_offset {
+    top: 55px !important;
 }

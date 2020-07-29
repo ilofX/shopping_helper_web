@@ -10,7 +10,7 @@ const session = require('express-session');
 //let redisClient = redis.createClient();
 
 var dashRouter = require('./routes/dash');
-//var usersRouter = require('./routes/users');
+var apiRouter = require('./routes/api');
 var loginRouter = require('./routes/login');
 
 var app = express();
@@ -34,17 +34,32 @@ app.use(bodyParser.urlencoded({
 }));
 
 /**bodyParser.json(options)
-* Parses the text as JSON and exposes the resulting object on req.body.
-*/
+ * Parses the text as JSON and exposes the resulting object on req.body.
+ */
 app.use(bodyParser.json());
 
+/**Session handler*/
+app.use(session({
+  name: 'sid',
+  secret: 'ZTY1Njk3MTQ5NzlkODI5Y2JlMTc5NjNmOTkzNDQ5Yjc2N2M5OGU0M2JiODU0OGMwYzBlOWViZmZkNzgwODViOA',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false, //change to true with HTTPS
+    sameSite: true,
+    maxAge: 600000 // Time is in miliseconds
+  },
+}));
+
+/**Allow usage of a reverse proxy*/
+//app.set('trust proxy', 1); //Enable if app is behind a proxy like Nginx
 
 app.use('/', loginRouter);
-//app.use('/users', usersRouter);
+app.use('/api', apiRouter);
 app.use('/dash', dashRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
@@ -58,23 +73,5 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-//Session handler
-app.use(session({
-  secret: ['ZTY1Njk3MTQ5NzlkODI5Y2JlMTc5NjNmOTkzNDQ5Yjc2N2M5OGU0M2JiODU0OGMwYzBlOWViZmZkNzgwODViOA'],
-  name: "ShoppingHelperSecret",
-  cookie: {
-    httpOnly: true,
-    secure: true,
-    sameSite: true,
-    maxAge: 600000 // Time is in miliseconds
-  },
-  //store: new RedisStore({ client: redisClient ,ttl: 86400}),
-  resave: false,
-  saveUninitialized: false
-}));
-
-//Allow usage of a reverse proxy
-//app.set('trust proxy', 1); //Enable if app is behind a proxy like Nginx
 
 module.exports = app;

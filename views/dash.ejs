@@ -8,11 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
+<loader>
+    <div id="load">
+    </div>
+</loader>
 <header>
     <div class="navbar-fixed">
         <nav class="navbar top-nav app_primary_color">
             <div class="nav-wrapper">
-                <a href="#" class="brand-logo right black-text padding-2"><%= title %> Web</a>
+                <a href="#" class="right dropdown-trigger padding-2" data-target="user-dropdown"><span
+                            class="black-text name user_font_topnav"><%= user %><i class="material-icons right">arrow_drop_down</i></span></a>
                 <a href="#" data-target="sidenav-left" class="sidenav-trigger left"><i
                             class="material-icons black-text">menu</i></a>
             </div>
@@ -23,29 +28,31 @@
         <li>
             <div class="user-view margin-bot-20">
                 <a href="#"><img class="center_logo_sidenav sidenav-close" src="imgs/ShoppingHelperIcon-black.svg"></a>
-                <a href="#" class="dropdown-trigger" data-target="user-dropdown"><span
-                            class="black-text name user_font_sidenav">Administrator<i class="material-icons right">arrow_drop_down</i></span></a>
+                <a href="#" class="black-text name appname_font_sidenav center"><%= title %> Web</a>
             </div>
         </li>
         <li>
             <div class="divider black"></div>
         </li>
-        <li><a class="sidenav-close" id="#pList_btn" href="#pList"><i class="material-icons">list</i>Products List</a>
+        <li><a class="sidenav-close" id="#pList_btn" href="#"><i class="material-icons">list</i>Products List</a></li>
+        <li><a class="sidenav-close" id="#sList_btn" href="#"><i class="material-icons">storefront</i>Shops List</a>
         </li>
-        <li><a class="sidenav-close" id="#sList_btn" href="#sList"><i class="material-icons">storefront</i>Shops
-                List</a></li>
         <li>
-            <div class="divider black"></div>
+            <div class="divider black shortened"></div>
         </li>
-        <li><a class="sidenav-close" id="#nProduct_btn" href="#nProduct"><i class="material-icons">add</i>New
+        <li><a class="sidenav-close" id="#nProduct_btn" href="#"><i class="material-icons">playlist_add</i>New
                 Product</a></li>
-        <li><a class="sidenav-close" id="#nShop_btn" href="#nShop"><i class="material-icons">add</i>New Shop</a></li>
+        <li><a class="sidenav-close" id="#nShop_btn" href="#"><i class="material-icons">add_business</i>New Shop</a>
         </li>
+        <li>
+            <div class="divider black shortened"></div>
+        </li>
+        <li><a class="sidenav-close" id="#nSale_btn" href="#"><i class="material-icons">add</i>Record sale</a></li>
 
-        <ul id="user-dropdown" class="dropdown-content">
-            <li><a class="sidenav-close" id="api_btn">Api Keys</a></li>
+        <ul id="user-dropdown" class="dropdown-content dropdown_offset">
+            <li><a class="" id="#api_btn">Api Keys</a></li>
             <li class="divider"></li>
-            <li><a class="sidenav-close" id="logout_btn">Logout</a></li>
+            <li><a class="" id="#logout_btn">Logout</a></li>
         </ul>
 
     </ul>
@@ -55,37 +62,359 @@
         <div class="row">
             <div class="col s12">
                 <ul class="tabs">
-                    <li class="tab col s3"><a href="#pList">Products List</a></li>
-                    <li class="tab col s3"><a href="#sList">Shops List</a></li>
-                    <li class="tab col s3"><a href="#nProduct">New Prduct</a></li>
-                    <li class="tab col s3"><a href="#nShop">New Shop</a></li>
+                    <li class="tab col s2"><a class="active" href="#Start"></a></li>
+                    <li class="tab col s2"><a href="#pList">Products List</a></li>
+                    <li class="tab col s2"><a href="#sList">Shops List</a></li>
+                    <li class="tab col s2"><a href="#nProduct">New Prduct</a></li>
+                    <li class="tab col s2"><a href="#nShop">New Shop</a></li>
+                    <li class="tab col s2"><a href="#rSale">Record sale</a></li>
                 </ul>
             </div>
 
+            <!-- Welcome message tab -->
+            <div id="Start" class="col s12">
+                <div class="tabs_content">
+                    <h1><%= title %> Web</h1>
+                    <p>Welcome <%= user %></p>
+                    <p>To start please select a voice from the menu on the left</p>
+                </div>
+            </div>
+            <!-- Welcome message tab -->
+
+            <!-- Products List tab -->
             <div id="pList" class="col s12">
                 <div class="tabs_content">
-                    <h1><%= title %></h1>
-                    <p>Welcome to <%= title %></p>
+                    <div class="row">
+                        <h2>Products List</h2>
+                    </div>
+                    <table class="striped responsive-table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Best Price</th>
+                            <th>Last Updated</th>
+                            <th>Details</th>
+                        </tr>
+                        </thead>
+                        <tbody id="pListTableBody"></tbody>
+                    </table>
                 </div>
             </div>
+            <!-- Products List tab -->
 
+            <!-- Shops List tab -->
             <div id="sList" class="col s12">
                 <div class="tabs_content">
-                    Test 2
+                    <div class="row">
+                        <h2>Shops List</h2>
+                    </div>
+                    <table class="striped responsive-table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Details</th>
+                        </tr>
+                        </thead>
+                        <tbody id="sListTableBody"></tbody>
+                    </table>
                 </div>
             </div>
+            <!-- Shops List tab -->
 
+            <!-- Add New Product tab -->
             <div id="nProduct" class="col s12">
                 <div class="tabs_content">
-                    Test 3
+                    <div class="row">
+                        <h2>New Product Registration</h2>
+                    </div>
+                    <div class="row">
+                        <form class="col s12">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="barcode" type="text" data-length="13">
+                                    <label for="barcode">Barcode</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="productName" type="text">
+                                    <label for="productName">Product Name</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="brand" type="text">
+                                    <label for="brand">Brand</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <a id="addProd_btn"
+                                   class="waves-effect waves-light app_primary_color darken-4 btn submit_btn">Add</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
+            <!-- Add New Product tab -->
 
+            <!-- Add New Shop tab -->
             <div id="nShop" class="col s12">
                 <div class="tabs_content">
-                    Test 4
+                    <div class="row">
+                        <h2>New Shop Registration</h2>
+                    </div>
+                    <div class="row">
+                        <form class="col s12">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="shopName" type="text">
+                                    <label for="shopName">Shop Name</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s9">
+                                    <input id="shopStreetName" type="text">
+                                    <label for="shopStreetName">Street Name</label>
+                                </div>
+                                <div class="input-field col s3">
+                                    <input id="shopStreetNumber" type="text">
+                                    <label for="shopStreetNumber">Street Number</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s4">
+                                    <input id="shopZIP" type="text">
+                                    <label for="shopZIP">ZIP Code</label>
+                                </div>
+                                <div class="input-field col s8">
+                                    <input id="city" type="text">
+                                    <label for="city">City</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <a id="addShop_btn"
+                                   class="waves-effect waves-light app_primary_color darken-4 btn submit_btn">Add</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
+            <!-- Add New Shop tab -->
+
+            <!-- Register New Sale tab -->
+            <div id="rSale" class="col s12">
+                <div class="tabs_content">
+                    <div class="row">
+                        <h2>New Sale Registration</h2>
+                    </div>
+                    <div class="row">
+                        <form class="col s12">
+                            <div class="row">
+                                <div id="shopSel_btn" class="input-field col s12">
+                                    <input disabled id="shopSel" type="text">
+                                    <label for="shopSel">Select a Shop</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div id="productSel_bnt" class="input-field col s12">
+                                    <input disabled id="productSel" type="text">
+                                    <label for="productSel">Select a product</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s4">
+                                    <input id="prodPrice" type="number" min="0" step=".01">
+                                    <label for="prodPrice">Price</label>
+                                </div>
+                                <div class="input-field col s4">
+                                    <input id="prodQuantity" type="number" min="1" step="1">
+                                    <label for="prodQuantity">Quantity</label>
+                                </div>
+                                <div class="input-field col s4">
+                                    <input id="prodPricePerUnit" type="number" min="0" step=".01">
+                                    <label for="prodPricePerUnit">Price Per Unit</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <p class="submit_btn">
+                                    <label>
+                                        <input type="checkbox" id="isOnSale"/>
+                                        <span>On Sale</span>
+                                    </label>
+                                </p>
+                            </div>
+                            <div class="row">
+                                <a id="rSale_btn"
+                                   class="waves-effect waves-light app_primary_color darken-4 btn submit_btn">Register</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Register New Sale tab -->
+
+            <!-- Product Details modal section -->
+            <div id="modalProdDetails" class="modal modal-fixed-footer">
+                <div class="modal-content">
+                    <div class="row">
+                        <h3 id="modalProdDetailsTitle"></h3>
+                    </div>
+                    <div class="row">
+                        <p>Details</p>
+                        <table class="responsive-table">
+                            <tbody id="modalProdDetailsTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <p>Sold in</p>
+                        <table class="striped responsive-table">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Location</th>
+                            </tr>
+                            </thead>
+                            <tbody id="modalProdDetailsShopListTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                </div>
+            </div>
+            <!-- Product Details modal section -->
+
+            <!-- Shop Details modal section -->
+            <div id="modalShopDetails" class="modal modal-fixed-footer">
+                <div class="modal-content">
+                    <div class="row">
+                        <h3 id="modalShopDetailsTitle"></h3>
+                    </div>
+                    <div class="row">
+                        <p>Details</p>
+                        <table class="responsive-table">
+                            <tbody id="modalShopDetailsTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <p>Products Sold In This Shop</p>
+                        <table class="striped responsive-table">
+                            <thead>
+                            <tr>
+                                <th>Barcode</th>
+                                <th>Name</th>
+                            </tr>
+                            </thead>
+                            <tbody id="modalShopDetailsProdListTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                </div>
+            </div>
+            <!-- Shop Details modal section -->
+
+            <!-- Product Selection modal section -->
+            <div id="modalProdSelection" class="modal modal-fixed-footer">
+                <div class="modal-content">
+                    <div class="row">
+                        <h3>Select a Product From The List</h3>
+                    </div>
+                    <div class="row">
+                        <table class="striped responsive-table">
+                            <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>Barcode</th>
+                                <th>Name</th>
+                            </tr>
+                            </thead>
+                            <tbody id="modalProductSelectionTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="modal-close waves-effect red-text waves-red btn-flat">Cancel</a>
+                    <a id="modalProdSelectionYes" href="#" class="waves-effect waves-green btn-flat">Select</a>
+                </div>
+            </div>
+            <!-- Product Selection modal section -->
+
+            <!-- Shop Selection modal section -->
+            <div id="modalShopSelection" class="modal modal-fixed-footer">
+                <div class="modal-content">
+                    <div class="row">
+                        <h3>Select a Shop From The List</h3>
+                    </div>
+                    <div class="row">
+                        <table class="striped responsive-table">
+                            <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>Name</th>
+                                <th>Location</th>
+                            </tr>
+                            </thead>
+                            <tbody id="modalShopSelectionTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="modal-close waves-effect red-text waves-red btn-flat">Cancel</a>
+                    <a id="modalShopSelectionYes" href="#" class="waves-effect waves-green btn-flat">Select</a>
+                </div>
+            </div>
+            <!-- Shop Selection modal section -->
+
+            <!-- Api Keys modal section -->
+            <div id="modalApiKeys" class="modal modal-fixed-footer">
+                <div class="modal-content">
+                    <div class="row">
+                        <h3>List of Currently Active Api Keys</h3>
+                    </div>
+                    <div class="row">
+                        <table class="striped responsive-table">
+                            <thead>
+                            <tr>
+                                <th>Api Key</th>
+                                <th>Generated</th>
+                            </tr>
+                            </thead>
+                            <tbody id="modalApiKeysTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                </div>
+            </div>
+            <!-- Api Keys modal section -->
+
+            <!-- Logout modal section -->
+            <div id="modalLogout" class="modal">
+                <div class="modal-content">
+                    <h3>Do you really want to log out?</h3>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="modal-close waves-effect red-text waves-red btn-flat">No</a>
+                    <a id="modalLogoutYes" href="#" class="waves-effect waves-green btn-flat">Yes</a>
+                </div>
+            </div>
+            <!-- Logout modal section -->
+
+            <!-- Update modal section -->
+            <div id="modalUpdate" class="modal">
+                <div class="modal-content">
+                    <h3 id="modalUpdateQuestion"></h3>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="modal-close waves-effect red-text waves-red btn-flat">No</a>
+                    <a id="modalUpdateYes" href="#" class="waves-effect waves-green btn-flat">Yes</a>
+                </div>
+            </div>
+            <!-- Logout modal section -->
 
         </div>
     </div>

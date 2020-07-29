@@ -10,11 +10,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
         $.ajax({
             type: "POST",
-            url: "/login_api",
+            url: "/login",
             data: data,
             dataType: "json",
             success: (data, textStatus) => {
-                console.log(data, textStatus);
+                //console.log(data, textStatus);
                 if (data.status) {
                     document.getElementById("login-message").innerHTML = data.message;
                     document.getElementById("login-message").classList.remove('fail');

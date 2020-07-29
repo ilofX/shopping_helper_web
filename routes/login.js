@@ -3,12 +3,19 @@ var router = express.Router();
 var mysql = require('mysql');
 var crypto = require('crypto');
 
+const redirectDash = (req, res, next) => {
+    if (req.session.userID) {
+        res.redirect('/dash');
+    } else {
+        next();
+    }
+}
 
-router.get('/', function (req, res, next) {
+router.get('/', redirectDash, function (req, res, next) {
     res.render('login', {title: 'Shopping Helper Login'});
 });
 
-router.post('/login_api', function (req, res, next) {
+router.post('/login', redirectDash, function (req, res, next) {
     console.log("User: ", req.body.username);
     console.log("Psw: ", req.body.password)
 
@@ -18,34 +25,47 @@ router.post('/login_api', function (req, res, next) {
         password: 'qNqz3PKKZ',
         database: 'shopping_helper'
     });
+
     connection.connect(function (err) {
         if (err) {
-            res.json({"status": false, "message": err});
-
+            console.log("Connection error" + err);
+            res.json({
+                "status": false,
+                "message": err
+            });
         }
     });
 
-    connection.query("SELECT ID,Username,Password FROM Users WHERE Username = ?", [
+    connection.query("SELECT ID,Username,Password FROM users WHERE Username = ?", [
         req.body.username
     ], function (err, result) {
-        if (err) res.json({"status": false, "message": err});
-        if (result.length > 0 && (result[0].Password === crypto.createHash('sha256').update(req.body.password).digest('hex'))) {
-            res.json({
-                "status": true,
-                "message": "Welcome " + result[0].Username
-            });
-            //req.session.regenerate(function (err) {
-            //});
-            //req.session.username = req.body.username;
-        } else {
+        if (err) {
+            console.log("Query Error" + err);
             res.json({
                 "status": false,
-                "message": "Wrong username or password"
+                "message": err
             });
+        } else {
+            if (result != null && result.length > 0 && (result[0].Password === crypto.createHash('sha256').update(req.body.password).digest('hex'))) {
+                req.session.username = result[0].Username;
+                req.session.userID = result[0].ID;
+                console.log("Auth OK for user: " + result[0].Username);
+                res.json({
+                    "status": true,
+                    "message": "Welcome " + result[0].Username
+                });
+            } else {
+                console.log("Auth NOT OK for user: " + req.body.username + "\n" + result);
+                res.json({
+                    "status": false,
+                    "message": "Wrong username or password"
+                });
+            }
         }
     });
 
     connection.end();
 });
+
 
 module.exports = router;
