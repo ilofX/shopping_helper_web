@@ -24,6 +24,12 @@
         </nav>
     </div>
 
+    <ul id="user-dropdown" class="dropdown-content dropdown_offset">
+        <li><a class="" id="#api_btn">Api Keys</a></li>
+        <li class="divider"></li>
+        <li><a class="" id="#logout_btn">Logout</a></li>
+    </ul>
+
     <ul id="sidenav-left" class="sidenav sidenav-fixed app_primary_color">
         <li>
             <div class="user-view margin-bot-20">
@@ -48,13 +54,6 @@
             <div class="divider black shortened"></div>
         </li>
         <li><a class="sidenav-close" id="#nSale_btn" href="#"><i class="material-icons">add</i>Record sale</a></li>
-
-        <ul id="user-dropdown" class="dropdown-content dropdown_offset">
-            <li><a class="" id="#api_btn">Api Keys</a></li>
-            <li class="divider"></li>
-            <li><a class="" id="#logout_btn">Logout</a></li>
-        </ul>
-
     </ul>
 </header>
 <main>
@@ -129,11 +128,11 @@
                         <h2>New Product Registration</h2>
                     </div>
                     <div class="row">
-                        <form class="col s12">
+                        <form id="newProductForm" class="col s12">
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="barcode" type="text" data-length="13">
-                                    <label for="barcode">Barcode</label>
+                                    <input id="productBarcode" type="text" data-length="13">
+                                    <label for="productBarcode">Barcode</label>
                                 </div>
                             </div>
                             <div class="row">
@@ -144,8 +143,8 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="brand" type="text">
-                                    <label for="brand">Brand</label>
+                                    <input id="productBrand" type="text">
+                                    <label for="productBrand">Brand</label>
                                 </div>
                             </div>
                             <div class="row">
@@ -165,7 +164,7 @@
                         <h2>New Shop Registration</h2>
                     </div>
                     <div class="row">
-                        <form class="col s12">
+                        <form id="newShopForm" class="col s12">
                             <div class="row">
                                 <div class="input-field col s12">
                                     <input id="shopName" type="text">
@@ -188,8 +187,8 @@
                                     <label for="shopZIP">ZIP Code</label>
                                 </div>
                                 <div class="input-field col s8">
-                                    <input id="city" type="text">
-                                    <label for="city">City</label>
+                                    <input id="shopCity" type="text">
+                                    <label for="shopCity">City</label>
                                 </div>
                             </div>
                             <div class="row">

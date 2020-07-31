@@ -29,7 +29,7 @@ router.post('/login', redirectDash, function (req, res, next) {
     connection.connect(function (err) {
         if (err) {
             console.log("Connection error" + err);
-            res.json({
+            return res.json({
                 "status": false,
                 "message": err
             });
@@ -50,6 +50,7 @@ router.post('/login', redirectDash, function (req, res, next) {
                 req.session.username = result[0].Username;
                 req.session.userID = result[0].ID;
                 console.log("Auth OK for user: " + result[0].Username);
+
                 res.json({
                     "status": true,
                     "message": "Welcome " + result[0].Username

@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function () {
 
     // submit button handler
     document.getElementById("submit").addEventListener("click", () => {
@@ -7,14 +7,13 @@ document.addEventListener('DOMContentLoaded', function() {
             username: document.getElementById("username").value,
             password: document.getElementById("password").value
         };
-    
+
         $.ajax({
             type: "POST",
             url: "/login",
             data: data,
             dataType: "json",
-            success: (data, textStatus) => {
-                //console.log(data, textStatus);
+            success: (data) => {
                 if (data.status) {
                     document.getElementById("login-message").innerHTML = data.message;
                     document.getElementById("login-message").classList.remove('fail');
@@ -27,10 +26,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
-    
+
     });
 
-
+    document.addEventListener('keypress', function (event) {
+        if (event.key === "Enter") {
+            document.getElementById('submit').click();
+        }
+    });
 });
 
 
