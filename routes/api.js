@@ -39,7 +39,7 @@ router.get('/newshop', chechAuth, function (req, res, next) {
     connection.query("INSERT INTO shop (Name, StreetName, StreetNumber, ZIPCode, City) VALUES (?, ?, ?, ?, ?);", [
         req.query.shopName,
         req.query.shopStreetName,
-        req.query.shopStreetNUmber,
+        req.query.shopStreetNumber,
         req.query.shopZIP,
         req.query.shopCity
     ], function (err, result) {
@@ -99,6 +99,57 @@ router.get('/newproduct', chechAuth, function (req, res, next) {
                 res.json({
                     "status": true,
                 });
+            } else {
+                return res.json({
+                    "status": false,
+                });
+            }
+        }
+    });
+
+    connection.end();
+});
+
+router.get('/shopslist', chechAuth, function (req, res, next) {
+    var connection = mysql.createConnection({
+        host: '192.168.3.240',
+        user: 'shopping_helper',
+        password: 'qNqz3PKKZ',
+        database: 'shopping_helper'
+    });
+
+    connection.connect(function (err) {
+        if (err) {
+            console.log("Connection error" + err);
+            return res.json({
+                "status": false,
+                "message": err
+            });
+        }
+    });
+
+    connection.query("SELECT ID,Name,StreetName,StreetNumber,ZIPCode,City FROM shop", function (err, result) {
+        if (err) {
+            return res.json({
+                "status": false,
+                "message": err
+            });
+        } else {
+            if (result != null && result.length >= 0) {
+                let ris = {
+                    'status': true,
+                    'shops': []
+                }
+                console.log(result);
+                for (let i = 0; i < result.length; i++) {
+                    console.log(result[i]);
+                    ris.shops.push({
+                        'ID': result[i].ID,
+                        'Name': result[i].Name,
+                        'Location': result[i].StreetName + ", " + result[i].StreetNumber + " " + result[i].ZIPCode + ", " + result[i].City
+                    });
+                }
+                res.json(ris);
             } else {
                 return res.json({
                     "status": false,

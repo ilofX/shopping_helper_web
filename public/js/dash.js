@@ -7,7 +7,7 @@ $(document).ready(function () {
     keyEventListener();
 });
 
-const apiAddress = "localhost:3000";
+const apiAddress = "192.168.3.212:3000";
 
 function init() {
     $('.sidenav').sidenav();
@@ -26,27 +26,34 @@ function sidenavEventsListeners() {
         tabs.tabs('select', 'pList');
         let tbody = document.getElementById('pListTableBody');
 
-        /* Sample code for generating tables with js
-        for(var i = 0; i < 3; i++){
-            var tr = tbl.insertRow();
-            for(var j = 0; j < 2; j++){
-                if(i == 2 && j == 1){
-                    break;
-                } else {
-                    var td = tr.insertCell();
-                    td.appendChild(document.createTextNode('Cell'));
-                    td.style.border = '1px solid black';
-                    if(i == 1 && j == 1){
-                        td.setAttribute('rowSpan', '2');
-                    }
-                }
-            }
-        }
-        */
+
     });
     document.getElementById("#sList_btn").addEventListener('click', function () {
-        tabs.tabs('select', 'sList');
         let tbody = document.getElementById('sListTableBody');
+        tbody.innerHTML = "";
+
+        tabs.tabs('select', 'sList');
+
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "http://" + apiAddress + "/api/shopslist",
+            data: {},
+            success: (data) => {
+                if (data.status) {
+                    for (let i = 0; i < data.shops.length; i++) {
+                        let tr = tbody.insertRow();
+                        tr.insertCell().appendChild(document.createTextNode(data.shops[i].Name));
+                        tr.insertCell().appendChild(document.createTextNode(data.shops[i].Location));
+                        tr.insertCell().appendChild(document.createTextNode(data.shops[i].ID));
+                    }
+                } else {
+                    M.toast({html: 'An error occured!'});
+                }
+            },
+        });
+
+
     });
     document.getElementById("#nProduct_btn").addEventListener('click', function () {
         tabs.tabs('select', 'nProduct');
@@ -104,7 +111,6 @@ function formsEventListeners() {
         }
 
         if (isOK) {
-            //console.log('Everything OK');
             $.ajax({
                 type: "GET",
                 dataType: "json",
