@@ -140,9 +140,7 @@ router.get('/shopslist', chechAuth, function (req, res, next) {
                     'status': true,
                     'shops': []
                 }
-                console.log(result);
                 for (let i = 0; i < result.length; i++) {
-                    console.log(result[i]);
                     ris.shops.push({
                         'ID': result[i].ID,
                         'Name': result[i].Name,

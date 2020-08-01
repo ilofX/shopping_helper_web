@@ -7,7 +7,7 @@ $(document).ready(function () {
     keyEventListener();
 });
 
-const apiAddress = "192.168.3.212:3000";
+const apiAddress = window.location.hostname+":3000";
 
 function init() {
     $('.sidenav').sidenav();
@@ -79,9 +79,53 @@ function formsEventListeners() {
     //modals
     document.getElementById('shopSel_btn').addEventListener('click', function () {
         $('#modalShopSelection').modal('open');
+
+        let tbody = document.getElementById('modalShopSelectionTableBody');
+        tbody.innerHTML = "";
+
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "http://" + apiAddress + "/api/shopslist",
+            data: {},
+            success: (data) => {
+                if (data.status) {
+                    for (let i = 0; i < data.shops.length; i++) {
+                        let tr = tbody.insertRow();
+                        tr.insertCell().innerHTML= '<p><label><input type="radio" name="shopSelection" value="' + data.shops[i].ID + '"' + '/><span>&nbsp&nbsp</span></label></p>';
+                        tr.insertCell().appendChild(document.createTextNode(data.shops[i].Name));
+                        tr.insertCell().appendChild(document.createTextNode(data.shops[i].Location));
+                    }
+                } else {
+                    M.toast({html: 'An error occured!'});
+                }
+            },
+        });
+
+
     });
     document.getElementById('productSel_bnt').addEventListener('click', function () {
         $('#modalProdSelection').modal('open');
+
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "http://" + apiAddress + "/api/shopslist",
+            data: {},
+            success: (data) => {
+                if (data.status) {
+                    for (let i = 0; i < data.shops.length; i++) {
+                        let tr = tbody.insertRow();
+                        tr.insertCell().innerHTML= '<p><label><input type="radio" name="shopSelection" value="' + data.shops[i].ID + '"' + '/><span>&nbsp&nbsp</span></label></p>';
+                        tr.insertCell().appendChild(document.createTextNode(data.shops[i].Name));
+                        tr.insertCell().appendChild(document.createTextNode(data.shops[i].Location));
+                    }
+                } else {
+                    M.toast({html: 'An error occured!'});
+                }
+            },
+        });
+
     });
 
     //buttons
@@ -124,9 +168,6 @@ function formsEventListeners() {
                     if (data.status) {
                         M.toast({html: 'Product succesfully added!'});
                         document.getElementById('newProductForm').reset();
-                        /*productBarcode.value = "";
-                        productName.value = "";
-                        productBrand.value = "";*/
                     } else {
                         M.toast({html: 'An error occured!\nplease try again'});
                     }
@@ -193,11 +234,6 @@ function formsEventListeners() {
                     if (data.status) {
                         M.toast({html: 'Shop succesfully added!'});
                         document.getElementById('newShopForm').reset();
-                        /*shopName.value = "";
-                        shopStreetName.value = "";
-                        shopStreetNumber.value = "";
-                        shopZIP.value = "";
-                        shopCity.value = "";*/
                     } else {
                         M.toast({html: 'An error occured!\nplease try again'});
                     }
