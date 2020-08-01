@@ -1,3 +1,4 @@
 TODO: implement HTTP2 protocol
 TODO: implement OAuth2 protocol for api and authentication
 TODO: implement api keys for Api Authentication
+TODO: add search function in shopSelection and productsSelection modals

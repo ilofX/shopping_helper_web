@@ -159,6 +159,57 @@ router.get('/shopslist', chechAuth, function (req, res, next) {
     connection.end();
 });
 
+router.get('/productslistcomplete', chechAuth, function (req, res, next) {
+    var connection = mysql.createConnection({
+        host: '192.168.3.240',
+        user: 'shopping_helper',
+        password: 'qNqz3PKKZ',
+        database: 'shopping_helper'
+    });
+
+    connection.connect(function (err) {
+        if (err) {
+            console.log("Connection error" + err);
+            return res.json({
+                "status": false,
+                "message": err
+            });
+        }
+    });
+
+    connection.query("SELECT product.Barcode, product.Name, sold.Price, sold.LastUpdate FROM product, sold WHERE product.Barcode = sold.ProductBarcode GROUP BY product.Barcode HAVING sold.Price = MIN(sold.Price)", function (err, result) {
+        if (err) {
+            return res.json({
+                "status": false,
+                "message": err
+            });
+        } else {
+            if (result != null && result.length >= 0) {
+                let ris = {
+                    'status': true,
+                    'products': []
+                }
+                for (let i = 0; i < result.length; i++) {
+                    ris.products.push({
+                        'Barcode': result[i].Barcode,
+                        'Name': result[i].Name,
+                        'Price': result[i].Price,
+                        'LastUpdate': result[i].LastUpdate
+                    });
+                }
+                res.json(ris);
+            } else {
+                return res.json({
+                    "status": false,
+                });
+            }
+        }
+    });
+
+    connection.end();
+});
+
+
 router.get('/productslist', chechAuth, function (req, res, next) {
     var connection = mysql.createConnection({
         host: '192.168.3.240',
@@ -206,5 +257,54 @@ router.get('/productslist', chechAuth, function (req, res, next) {
 
     connection.end();
 });
+
+router.get('/registersale', chechAuth, function (req, res, next) {
+    var connection = mysql.createConnection({
+        host: '192.168.3.240',
+        user: 'shopping_helper',
+        password: 'qNqz3PKKZ',
+        database: 'shopping_helper'
+    });
+
+    connection.connect(function (err) {
+        if (err) {
+            console.log("Connection error" + err);
+            return res.json({
+                "status": false,
+                "message": err
+            });
+        }
+    });
+
+    connection.query("INSERT INTO sold (ProductBarcode, ShopID, Price, Quantity, PriceAtUnit, Offer) VALUES (?, ?, ?, ?, ?, ?);",[
+        req.query.productBarcode,
+        req.query.shopID,
+        req.query.price,
+        req.query.quantity,
+        req.query.pricePerUnit,
+        req.query.isOnSale
+        ],
+    function (err, result) {
+        if (err) {
+            return res.json({
+                "status": false,
+                "message": err
+            });
+        } else {
+            if (result != null && result.affectedRows >= 0) {
+                res.json({
+                    'status': true
+                });
+            } else {
+                return res.json({
+                    "status": false,
+                });
+            }
+        }
+    });
+
+    connection.end();
+});
+
 
 module.exports = router;

@@ -8,6 +8,7 @@ $(document).ready(function () {
 });
 
 const apiAddress = window.location.hostname+":3000";
+const value=" €";
 
 function init() {
     $('.sidenav').sidenav();
@@ -23,8 +24,31 @@ function sidenavEventsListeners() {
 
     //Main Sections
     document.getElementById("#pList_btn").addEventListener('click', function () {
-        tabs.tabs('select', 'pList');
         let tbody = document.getElementById('pListTableBody');
+        tbody.innerHTML = "";
+
+        tabs.tabs('select', 'pList');
+
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "http://" + apiAddress + "/api/productslistcomplete",
+            data: {},
+            success: (data) => {
+                if (data.status) {
+                    for (let i = 0; i < data.products.length; i++) {
+                        let tr = tbody.insertRow();
+                        tr.insertCell().appendChild(document.createTextNode(data.products[i].Name));
+                        tr.insertCell().appendChild(document.createTextNode(data.products[i].Price+value));
+                        tr.insertCell().appendChild(document.createTextNode(data.products[i].LastUpdate.toString()));
+                        tr.insertCell().appendChild(document.createTextNode(data.products[i].Barcode));
+                    }
+                } else {
+                    M.toast({html: 'An error occured!'});
+                }
+            },
+        });
+
 
 
     });
@@ -78,10 +102,10 @@ function formsEventListeners() {
 
     //modals
     document.getElementById('shopSel_btn').addEventListener('click', function () {
-        $('#modalShopSelection').modal('open');
-
         let tbody = document.getElementById('modalShopSelectionTableBody');
         tbody.innerHTML = "";
+
+        $('#modalShopSelection').modal('open');
 
         $.ajax({
             type: "GET",
@@ -92,7 +116,7 @@ function formsEventListeners() {
                 if (data.status) {
                     for (let i = 0; i < data.shops.length; i++) {
                         let tr = tbody.insertRow();
-                        tr.insertCell().innerHTML= '<p><label><input type="radio" name="shopSelection" value="' + data.shops[i].ID + '"' + '/><span>&nbsp&nbsp</span></label></p>';
+                        tr.insertCell().innerHTML= '<p><label><input type="radio" name="shopSelection" value="' + data.shops[i].ID + '"' + '/><span>&nbsp</span></label></p>';
                         tr.insertCell().appendChild(document.createTextNode(data.shops[i].Name));
                         tr.insertCell().appendChild(document.createTextNode(data.shops[i].Location));
                     }
@@ -105,6 +129,9 @@ function formsEventListeners() {
 
     });
     document.getElementById('productSel_bnt').addEventListener('click', function () {
+        let tbody = document.getElementById('modalProductSelectionTableBody');
+        tbody.innerHTML = "";
+
         $('#modalProdSelection').modal('open');
 
         $.ajax({
@@ -116,7 +143,7 @@ function formsEventListeners() {
                 if (data.status) {
                     for (let i = 0; i < data.products.length; i++) {
                         let tr = tbody.insertRow();
-                        tr.insertCell().innerHTML = '<p><label><input type="radio" name="productSelection" value="' + data.products[i].Barcode + '"' + '/><span>&nbsp&nbsp</span></label></p>';
+                        tr.insertCell().innerHTML = '<p><label><input type="radio" name="productSelection" value="' + data.products[i].Barcode + '"' + '/><span>&nbsp</span></label></p>';
                         tr.insertCell().appendChild(document.createTextNode(data.products[i].Barcode));
                         tr.insertCell().appendChild(document.createTextNode(data.products[i].Name));
                     }
@@ -232,7 +259,7 @@ function formsEventListeners() {
                 },
                 success: (data) => {
                     if (data.status) {
-                        M.toast({html: 'Shop succesfully added!'});
+                        M.toast({html: 'Shop successfully added!'});
                         document.getElementById('newShopForm').reset();
                     } else {
                         M.toast({html: 'An error occured!\nplease try again'});
@@ -244,17 +271,83 @@ function formsEventListeners() {
     });
 
     document.getElementById('rSale_btn').addEventListener('click', function () {
+        let shop = document.getElementById('shopSel');
+        let product = document.getElementById('productSel');
+        let price = document.getElementById('prodPrice');
+        let quantity = document.getElementById('prodQuantity');
+        let pricePerUnit = document.getElementById('prodPricePerUnit');
+        let onSale= document.getElementById('isOnSale');
+        let isOK = true;
 
+        if (shop.value === "") {
+            shop.classList.add('invalid');
+            isOK = false;
+        } else {
+            shop.classList.remove('invalid');
+        }
+        if (product.value === "") {
+            product.classList.add('invalid');
+            isOK = false;
+        } else {
+            product.classList.remove('invalid');
+        }
+        if (price.value === "") {
+            price.classList.add('invalid');
+            isOK = false;
+        } else {
+            price.classList.remove('invalid');
+        }
+        if (quantity.value === "") {
+            quantity.classList.add('invalid');
+            isOK = false;
+        } else {
+            quantity.classList.remove('invalid');
+        }
+        if (pricePerUnit.value === "") {
+            pricePerUnit.classList.add('invalid');
+            isOK = false;
+        } else {
+            pricePerUnit.classList.remove('invalid');
+        }
+
+        if (isOK) {
+            //console.log('Everything OK');
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "http://" + apiAddress + "/api/registersale",
+                data: {
+                    'shopID': shop.value.trim(),
+                    'productBarcode': product.value.trim(),
+                    'price': price.value,
+                    'quantity': quantity.value,
+                    'pricePerUnit': pricePerUnit.value,
+                    'isOnSale': (onSale.value === 'on')? 1 : 0
+                },
+                success: (data) => {
+                    if (data.status) {
+                        M.toast({html: 'Sale successfully added!'});
+                        document.getElementById('rSaleForm').reset();
+                    } else {
+                        M.toast({html: 'An error occured!\nplease try again'});
+                    }
+                }
+            });
+        }
     });
 
 }
 
 function modalEventsListeners() {
     document.getElementById('modalProdSelectionYes').addEventListener('click', function () {
-
+        document.getElementById('productSel').value = document.querySelector('input[name = "productSelection"]:checked').value;
+        document.getElementById('productSelLabel').classList.add('active');
+        $('#modalProdSelection').modal('close');
     });
     document.getElementById('modalShopSelectionYes').addEventListener('click', function () {
-
+        document.getElementById('shopSel').value = document.querySelector('input[name = "shopSelection"]:checked').value;
+        document.getElementById('shopSelLabel').classList.add('active');
+        $('#modalShopSelection').modal('close');
     });
     document.getElementById('modalLogoutYes').addEventListener('click', function () {
         $.ajax({
