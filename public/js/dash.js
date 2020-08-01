@@ -110,15 +110,15 @@ function formsEventListeners() {
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: "http://" + apiAddress + "/api/shopslist",
+            url: "http://" + apiAddress + "/api/productslist",
             data: {},
             success: (data) => {
                 if (data.status) {
-                    for (let i = 0; i < data.shops.length; i++) {
+                    for (let i = 0; i < data.products.length; i++) {
                         let tr = tbody.insertRow();
-                        tr.insertCell().innerHTML= '<p><label><input type="radio" name="shopSelection" value="' + data.shops[i].ID + '"' + '/><span>&nbsp&nbsp</span></label></p>';
-                        tr.insertCell().appendChild(document.createTextNode(data.shops[i].Name));
-                        tr.insertCell().appendChild(document.createTextNode(data.shops[i].Location));
+                        tr.insertCell().innerHTML = '<p><label><input type="radio" name="productSelection" value="' + data.products[i].Barcode + '"' + '/><span>&nbsp&nbsp</span></label></p>';
+                        tr.insertCell().appendChild(document.createTextNode(data.products[i].Barcode));
+                        tr.insertCell().appendChild(document.createTextNode(data.products[i].Name));
                     }
                 } else {
                     M.toast({html: 'An error occured!'});

@@ -159,4 +159,52 @@ router.get('/shopslist', chechAuth, function (req, res, next) {
     connection.end();
 });
 
+router.get('/productslist', chechAuth, function (req, res, next) {
+    var connection = mysql.createConnection({
+        host: '192.168.3.240',
+        user: 'shopping_helper',
+        password: 'qNqz3PKKZ',
+        database: 'shopping_helper'
+    });
+
+    connection.connect(function (err) {
+        if (err) {
+            console.log("Connection error" + err);
+            return res.json({
+                "status": false,
+                "message": err
+            });
+        }
+    });
+
+    connection.query("SELECT Barcode,Name FROM product", function (err, result) {
+        if (err) {
+            return res.json({
+                "status": false,
+                "message": err
+            });
+        } else {
+            if (result != null && result.length >= 0) {
+                let ris = {
+                    'status': true,
+                    'products': []
+                }
+                for (let i = 0; i < result.length; i++) {
+                    ris.products.push({
+                        'Barcode': result[i].Barcode,
+                        'Name': result[i].Name
+                    });
+                }
+                res.json(ris);
+            } else {
+                return res.json({
+                    "status": false,
+                });
+            }
+        }
+    });
+
+    connection.end();
+});
+
 module.exports = router;
