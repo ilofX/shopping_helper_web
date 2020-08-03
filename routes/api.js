@@ -177,7 +177,7 @@ router.get('/productslistcomplete', chechAuth, function (req, res, next) {
         }
     });
 
-    connection.query("SELECT product.Barcode, product.Name, sold.Price, sold.LastUpdate FROM product, sold WHERE product.Barcode = sold.ProductBarcode GROUP BY product.Barcode HAVING sold.Price = MIN(sold.Price)", function (err, result) {
+    connection.query("SELECT product.Barcode, product.Name, sold.Price, DATE_FORMAT(sold.LastUpdate,'%d-%m-%Y') AS LastUpdate, shop.Name AS 'shopName', shop.City FROM product, sold, shop WHERE sold.ShopID = shop.ID AND product.Barcode = sold.ProductBarcode GROUP BY product.Barcode HAVING sold.Price = MIN(sold.Price)", function (err, result) {
         if (err) {
             return res.json({
                 "status": false,
@@ -194,7 +194,8 @@ router.get('/productslistcomplete', chechAuth, function (req, res, next) {
                         'Barcode': result[i].Barcode,
                         'Name': result[i].Name,
                         'Price': result[i].Price,
-                        'LastUpdate': result[i].LastUpdate
+                        'LastUpdate': result[i].LastUpdate,
+                        'shop': result[i].shopName + ", " + result[i].City
                     });
                 }
                 res.json(ris);

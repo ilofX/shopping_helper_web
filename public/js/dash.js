@@ -39,9 +39,8 @@ function sidenavEventsListeners() {
                     for (let i = 0; i < data.products.length; i++) {
                         let tr = tbody.insertRow();
                         tr.insertCell().appendChild(document.createTextNode(data.products[i].Name));
-                        tr.insertCell().appendChild(document.createTextNode(data.products[i].Price + value));
+                        tr.insertCell().appendChild(document.createTextNode(data.products[i].Price+value+" ("+data.products[i].shop+")"));
                         tr.insertCell().appendChild(document.createTextNode(data.products[i].LastUpdate.toString()));
-                        //tr.insertCell().appendChild(document.createTextNode(data.products[i].Barcode));
                         tr.insertCell().innerHTML = '<a href="#" onclick="prodDetails(' + data.products[i].Barcode + ')"><i class="material-icons">read_more</i></a>';
                     }
                 } else {

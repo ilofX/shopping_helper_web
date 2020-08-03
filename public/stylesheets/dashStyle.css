@@ -70,3 +70,11 @@ nav.top-nav {
 .dropdown_offset {
     top: 55px !important;
 }
+
+.scrollable{
+    overflow: auto;
+}
+
+.minWidth{
+    min-width: 600px;
+}

@@ -41,7 +41,7 @@ router.post('/login', redirectDash, function (req, res, next) {
     ], function (err, result) {
         if (err) {
             console.log("Query Error" + err);
-            res.json({
+            return res.json({
                 "status": false,
                 "message": err
             });

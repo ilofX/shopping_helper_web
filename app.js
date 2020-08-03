@@ -47,7 +47,7 @@ app.use(session({
   cookie: {
     secure: false, //change to true with HTTPS
     sameSite: true,
-    maxAge: 600000 // Time is in miliseconds
+    maxAge: 1000 * 60 * 60 * 2// Time is in miliseconds
   },
 }));
 
