@@ -39,9 +39,10 @@ function sidenavEventsListeners() {
                     for (let i = 0; i < data.products.length; i++) {
                         let tr = tbody.insertRow();
                         tr.insertCell().appendChild(document.createTextNode(data.products[i].Name));
-                        tr.insertCell().appendChild(document.createTextNode(data.products[i].Price+value));
+                        tr.insertCell().appendChild(document.createTextNode(data.products[i].Price + value));
                         tr.insertCell().appendChild(document.createTextNode(data.products[i].LastUpdate.toString()));
-                        tr.insertCell().appendChild(document.createTextNode(data.products[i].Barcode));
+                        //tr.insertCell().appendChild(document.createTextNode(data.products[i].Barcode));
+                        tr.insertCell().innerHTML = '<a href="#" onclick="prodDetails(' + data.products[i].Barcode + ')"><i class="material-icons">read_more</i></a>';
                     }
                 } else {
                     M.toast({html: 'An error occured!'});
@@ -69,7 +70,8 @@ function sidenavEventsListeners() {
                         let tr = tbody.insertRow();
                         tr.insertCell().appendChild(document.createTextNode(data.shops[i].Name));
                         tr.insertCell().appendChild(document.createTextNode(data.shops[i].Location));
-                        tr.insertCell().appendChild(document.createTextNode(data.shops[i].ID));
+                        //tr.insertCell().appendChild(document.createTextNode(data.shops[i].ID));
+                        tr.insertCell().innerHTML = '<a href="#" onclick="shopDetails(' + data.shops[i].ID + ')"><i class="material-icons">read_more</i></a>';
                     }
                 } else {
                     M.toast({html: 'An error occured!'});
@@ -245,7 +247,6 @@ function formsEventListeners() {
         }
 
         if (isOK) {
-            //console.log('Everything OK');
             $.ajax({
                 type: "GET",
                 dataType: "json",
@@ -311,7 +312,6 @@ function formsEventListeners() {
         }
 
         if (isOK) {
-            //console.log('Everything OK');
             $.ajax({
                 type: "GET",
                 dataType: "json",
@@ -387,4 +387,12 @@ function keyEventListener() {
             }
         }
     });
+}
+
+function prodDetails(barcode) {
+
+}
+
+function shopDetails(id) {
+    alert(id);
 }
