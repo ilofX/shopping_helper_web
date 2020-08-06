@@ -36,12 +36,14 @@ router.get('/newshop', chechAuth, function (req, res, next) {
         }
     });
 
-    connection.query("INSERT INTO shop (Name, StreetName, StreetNumber, ZIPCode, City) VALUES (?, ?, ?, ?, ?);", [
+
+    connection.query("INSERT INTO shop (Name, StreetName, StreetNumber, ZIPCode, City, addedBy) VALUES (?, ?, ?, ?, ?, ?);", [
         req.query.shopName,
         req.query.shopStreetName,
         req.query.shopStreetNumber,
         req.query.shopZIP,
-        req.query.shopCity
+        req.query.shopCity,
+        req.session.userID
     ], function (err, result) {
         if (err) {
             return res.json({
@@ -84,10 +86,11 @@ router.get('/newproduct', chechAuth, function (req, res, next) {
         }
     });
 
-    connection.query("INSERT INTO product (Barcode, Name, Brand) VALUES (?, ?, ?);", [
+    connection.query("INSERT INTO product (Barcode, Name, Brand, addedBy) VALUES (?, ?, ?, ?);", [
         req.query.productBarcode,
         req.query.productName,
         req.query.productBrand,
+        req.session.userID
     ], function (err, result) {
         if (err) {
             return res.json({
@@ -289,15 +292,15 @@ router.get('/registersale', chechAuth, function (req, res, next) {
         }
     });
 
-    connection.query("INSERT INTO sold (ProductBarcode, ShopID, Price, Quantity, PriceAtUnit, Offer) VALUES (?, ?, ?, ?, ?, ?);",[
+    connection.query("INSERT INTO sold (ProductBarcode, ShopID, Price, Quantity, PriceAtUnit, Offer, addedBy) VALUES (?, ?, ?, ?, ?, ?, ?);", [
         req.query.productBarcode,
         req.query.shopID,
         req.query.price,
         req.query.quantity,
         req.query.pricePerUnit,
-        req.query.isOnSale
-        ],
-    function (err, result) {
+        req.query.isOnSale,
+        req.session.userID
+    ], function (err, result) {
         if (err) {
             return res.json({
                 "status": false,
