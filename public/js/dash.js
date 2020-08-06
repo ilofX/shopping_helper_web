@@ -7,8 +7,11 @@ $(document).ready(function () {
     keyEventListener();
 });
 
-const apiAddress = window.location.hostname+":3000";
-const value=" €";
+const apiProtocol = 'http://';
+const apiPort = '3000';
+const apiAddress = 'shoppinghelper.ddns.net';
+const apiURL = apiProtocol + "://" + apiAddress + ":" + apiPort;
+const value = " €";
 
 function init() {
     $('.sidenav').sidenav();
@@ -32,16 +35,22 @@ function sidenavEventsListeners() {
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: "http://" + apiAddress + "/api/productslistcomplete",
+            url: apiURL + "/api/productslistcomplete",
             data: {},
             success: (data) => {
                 if (data.status) {
                     for (let i = 0; i < data.products.length; i++) {
                         let tr = tbody.insertRow();
                         tr.insertCell().appendChild(document.createTextNode(data.products[i].Name));
-                        tr.insertCell().appendChild(document.createTextNode(data.products[i].Price+value+" ("+data.products[i].shop+")"));
-                        tr.insertCell().appendChild(document.createTextNode(data.products[i].LastUpdate.toString()));
-                        tr.insertCell().innerHTML = '<a href="#" onclick="prodDetails(' + data.products[i].Barcode + ')"><i class="material-icons">read_more</i></a>';
+                        if (data.products[i].Price !== ' ') {
+                            tr.insertCell().appendChild(document.createTextNode(data.products[i].Price + value + " (" + data.products[i].shop + ")"));
+                            tr.insertCell().appendChild(document.createTextNode(data.products[i].LastUpdate.toString()));
+                            tr.insertCell().innerHTML = '<a href="#" onclick="prodDetails(' + data.products[i].Barcode + ')"><i class="material-icons">read_more</i></a>';
+                        } else {
+                            tr.insertCell().appendChild(document.createTextNode(" "));
+                            tr.insertCell().appendChild(document.createTextNode(""));
+                            tr.insertCell().appendChild(document.createTextNode(""));
+                        }
                     }
                 } else {
                     M.toast({html: 'An error occured!'});
@@ -61,7 +70,7 @@ function sidenavEventsListeners() {
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: "http://" + apiAddress + "/api/shopslist",
+            url: apiURL + "/api/shopslist",
             data: {},
             success: (data) => {
                 if (data.status) {
@@ -111,13 +120,13 @@ function formsEventListeners() {
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: "http://" + apiAddress + "/api/shopslist",
+            url: apiURL + "/api/shopslist",
             data: {},
             success: (data) => {
                 if (data.status) {
                     for (let i = 0; i < data.shops.length; i++) {
                         let tr = tbody.insertRow();
-                        tr.insertCell().innerHTML= '<p><label><input type="radio" name="shopSelection" value="' + data.shops[i].ID + '"' + '/><span>&nbsp</span></label></p>';
+                        tr.insertCell().innerHTML = '<p><label><input type="radio" name="shopSelection" value="' + data.shops[i].ID + '"' + '/><span>&nbsp</span></label></p>';
                         tr.insertCell().appendChild(document.createTextNode(data.shops[i].Name));
                         tr.insertCell().appendChild(document.createTextNode(data.shops[i].Location));
                     }
@@ -138,7 +147,7 @@ function formsEventListeners() {
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: "http://" + apiAddress + "/api/productslist",
+            url: apiURL + "/api/productslist",
             data: {},
             success: (data) => {
                 if (data.status) {
@@ -186,7 +195,7 @@ function formsEventListeners() {
             $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: "http://" + apiAddress + "/api/newproduct",
+                url: apiURL + "/api/newproduct",
                 data: {
                     'productBarcode': productBarcode.value.trim(),
                     'productName': productName.value.trim(),
@@ -249,7 +258,7 @@ function formsEventListeners() {
             $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: "http://" + apiAddress + "/api/newshop",
+                url: apiURL + "/api/newshop",
                 data: {
                     'shopName': shopName.value.trim(),
                     'shopStreetName': shopStreetName.value.trim(),
@@ -276,7 +285,6 @@ function formsEventListeners() {
         let price = document.getElementById('prodPrice');
         let quantity = document.getElementById('prodQuantity');
         let pricePerUnit = document.getElementById('prodPricePerUnit');
-        let onSale= document.getElementById('isOnSale');
         let isOK = true;
 
         if (shop.value === "") {
@@ -314,14 +322,14 @@ function formsEventListeners() {
             $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: "http://" + apiAddress + "/api/registersale",
+                url: apiURL + "/api/registersale",
                 data: {
                     'shopID': shop.value.trim(),
                     'productBarcode': product.value.trim(),
                     'price': price.value,
                     'quantity': quantity.value,
                     'pricePerUnit': pricePerUnit.value,
-                    'isOnSale': (onSale.value === 'on')? 1 : 0
+                    'isOnSale': ($('#isOnSale').is(':checked')) ? 1 : 0
                 },
                 success: (data) => {
                     if (data.status) {
@@ -389,9 +397,98 @@ function keyEventListener() {
 }
 
 function prodDetails(barcode) {
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: apiURL + "/api/productdetails",
+        data: {
+            'Barcode': barcode.toString().trim()
+        },
+        success: (data) => {
+            if (data.status) {
+                document.getElementById('modalProdDetailsTitle').innerText = data.Name + " Details";
+                let detailsTable = document.getElementById('modalProdDetailsTableBody');
+                let shopsTable = document.getElementById('modalProdDetailsShopListTableBody');
 
+                detailsTable.innerHTML = "";
+                shopsTable.innerHTML = "";
+
+                let tr = detailsTable.insertRow();
+                tr.insertCell().appendChild(document.createTextNode('Barcode:'));
+                tr.insertCell().appendChild(document.createTextNode(data.Barcode));
+                tr = detailsTable.insertRow();
+                tr.insertCell().appendChild(document.createTextNode('Name:'));
+                tr.insertCell().appendChild(document.createTextNode(data.Name));
+                tr = detailsTable.insertRow();
+                tr.insertCell().appendChild(document.createTextNode('Brand:'));
+                tr.insertCell().appendChild(document.createTextNode(data.Brand));
+
+                tr = detailsTable.insertRow();
+                tr.insertCell().appendChild(document.createTextNode('Best Price:'));
+                tr.insertCell().appendChild(document.createTextNode(data.BestPrice + value));
+
+                tr = detailsTable.insertRow();
+                tr.insertCell().appendChild(document.createTextNode('LastUpdate:'));
+                tr.insertCell().appendChild(document.createTextNode(data.LastUpdate));
+
+                for (let i = 0; i < data.shops.length; i++) {
+                    let tr = shopsTable.insertRow();
+                    tr.insertCell().appendChild(document.createTextNode(data.shops[i].Name));
+                    tr.insertCell().appendChild(document.createTextNode(data.shops[i].Location));
+                    tr.insertCell().appendChild(document.createTextNode(data.shops[i].Price + value));
+                    tr.insertCell().appendChild(document.createTextNode(data.shops[i].LastUpdate));
+                }
+
+                $('#modalProdDetails').modal('open');
+            } else {
+                M.toast({html: 'An error occured!<br/>please try again'});
+            }
+        }
+    });
 }
 
-function shopDetails(id) {
-    alert(id);
+function shopDetails(ID) {
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: apiURL + "/api/shopdetails",
+        data: {
+            'ID': ID.toString().trim()
+        },
+        success: (data) => {
+            if (data.status) {
+                document.getElementById('modalShopDetailsTitle').innerText = data.Name + "Details";
+
+                let detailsTable = document.getElementById('modalShopDetailsTableBody');
+                let productsTable = document.getElementById('modalShopDetailsProdListTableBody');
+
+                detailsTable.innerHTML = "";
+                productsTable.innerHTML = "";
+
+                let tr = detailsTable.insertRow();
+                tr.insertCell().appendChild(document.createTextNode('ID:'));
+                tr.insertCell().appendChild(document.createTextNode(data.ID));
+                tr = detailsTable.insertRow();
+                tr.insertCell().appendChild(document.createTextNode('Name:'));
+                tr.insertCell().appendChild(document.createTextNode(data.Name));
+                tr = detailsTable.insertRow();
+                tr.insertCell().appendChild(document.createTextNode('Location:'));
+                tr.insertCell().appendChild(document.createTextNode(data.Location));
+
+
+                for (let i = 0; i < data.products.length; i++) {
+                    let tr = productsTable.insertRow();
+                    tr.insertCell().appendChild(document.createTextNode(data.products[i].Barcode));
+                    tr.insertCell().appendChild(document.createTextNode(data.products[i].Name));
+                    tr.insertCell().appendChild(document.createTextNode(data.products[i].Price + value));
+                    tr.insertCell().appendChild(document.createTextNode(data.products[i].LastUpdate));
+                }
+
+
+                $('#modalShopDetails').modal('open');
+            } else {
+                M.toast({html: 'An error occured!<br/>please reload and try again'});
+            }
+        }
+    });
 }

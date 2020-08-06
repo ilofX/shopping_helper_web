@@ -7,7 +7,8 @@ But we don't grant the appication security for any version prior version 1.0
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 0.0.0   | :x:                |
+| 0.8.0   | :x:                |
+| 0.9.0   | :x:                |
 | 1.0.0   | :white_check_mark: |
 
 ## Reporting a Vulnerability

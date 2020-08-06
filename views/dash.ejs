@@ -8,10 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-<loader>
-    <div id="load">
-    </div>
-</loader>
 <header>
     <div class="navbar-fixed">
         <nav class="navbar top-nav app_primary_color">
@@ -33,7 +29,8 @@
     <ul id="sidenav-left" class="sidenav sidenav-fixed app_primary_color">
         <li>
             <div class="user-view margin-bot-20">
-                <a href="#"><img class="center_logo_sidenav sidenav-close" src="imgs/ShoppingHelperIcon-black.svg"></a>
+                <a href="#"><img class="center_logo_sidenav sidenav-close" src="imgs/ShoppingHelperIcon-black.svg"
+                                 alt="ShoppingHelperLogo"></a>
                 <a href="#" class="black-text name appname_font_sidenav center"><%= title %> Web</a>
             </div>
         </li>
@@ -260,18 +257,20 @@
                         <h3 id="modalProdDetailsTitle"></h3>
                     </div>
                     <div class="row">
-                        <p>Details</p>
+                        <h5>Details</h5>
                         <table class="scrollable minWidth">
                             <tbody id="modalProdDetailsTableBody"></tbody>
                         </table>
                     </div>
                     <div class="row">
-                        <p>Sold in</p>
+                        <h5>Sold in these shops</h5>
                         <table class="striped scrollable minWidth">
                             <thead>
                             <tr>
                                 <th>Name</th>
                                 <th>Location</th>
+                                <th>Price</th>
+                                <th>Last Update</th>
                             </tr>
                             </thead>
                             <tbody id="modalProdDetailsShopListTableBody"></tbody>
@@ -291,18 +290,20 @@
                         <h3 id="modalShopDetailsTitle"></h3>
                     </div>
                     <div class="row">
-                        <p>Details</p>
+                        <h5>Details</h5>
                         <table class="scrollable minWidth">
                             <tbody id="modalShopDetailsTableBody"></tbody>
                         </table>
                     </div>
                     <div class="row">
-                        <p>Products Sold In This Shop</p>
+                        <h5>Products Sold In This Shop</h5>
                         <table class="striped scrollable minWidth">
                             <thead>
                             <tr>
                                 <th>Barcode</th>
                                 <th>Name</th>
+                                <th>Price</th>
+                                <th>Last Update</th>
                             </tr>
                             </thead>
                             <tbody id="modalShopDetailsProdListTableBody"></tbody>
