@@ -7,9 +7,9 @@ $(document).ready(function () {
     keyEventListener();
 });
 
-const apiProtocol = 'http://';
+const apiProtocol = 'http';
 const apiPort = '3000';
-const apiAddress = 'shoppinghelper.ddns.net';
+const apiAddress = 'localhost';
 const apiURL = apiProtocol + "://" + apiAddress + ":" + apiPort;
 const value = " €";
 
@@ -31,6 +31,7 @@ function sidenavEventsListeners() {
         tbody.innerHTML = "";
 
         tabs.tabs('select', 'pList');
+        console.log(apiURL);
 
         $.ajax({
             type: "GET",
