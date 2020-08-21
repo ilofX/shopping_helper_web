@@ -46,11 +46,11 @@ function sidenavEventsListeners() {
                         if (data.products[i].Price !== ' ') {
                             tr.insertCell().appendChild(document.createTextNode(data.products[i].Price + value + " (" + data.products[i].shop + ")"));
                             tr.insertCell().appendChild(document.createTextNode(data.products[i].LastUpdate.toString()));
-                            tr.insertCell().innerHTML = '<a href="#" onclick="prodDetails(' + data.products[i].Barcode + ')"><i class="material-icons">read_more</i></a>';
+                            tr.insertCell().innerHTML = '<a href="#" onclick="prodDetails(' + data.products[i].Barcode + ')"><i class="material-icons">read_more</i></a><a href="#" onclick="editProd(' + data.products[i].Barcode + ')"><i class="material-icons">edit</i></a><a href="#" onclick="prodDelete(' + data.products[i].Barcode + ')"><i class="material-icons">delete</i></a>';
                         } else {
                             tr.insertCell().appendChild(document.createTextNode(" "));
-                            tr.insertCell().appendChild(document.createTextNode(""));
-                            tr.insertCell().appendChild(document.createTextNode(""));
+                            tr.insertCell().appendChild(document.createTextNode(" "));
+                            tr.insertCell().innerHTML = '<a href="#" onclick="editProd(' + data.products[i].Barcode + ')"><i class="material-icons">edit</i></a><a href="#" onclick="prodDelete(' + data.products[i].Barcode + ')"><i class="material-icons">delete</i></a>';
                         }
                     }
                 } else {
@@ -79,8 +79,7 @@ function sidenavEventsListeners() {
                         let tr = tbody.insertRow();
                         tr.insertCell().appendChild(document.createTextNode(data.shops[i].Name));
                         tr.insertCell().appendChild(document.createTextNode(data.shops[i].Location));
-                        //tr.insertCell().appendChild(document.createTextNode(data.shops[i].ID));
-                        tr.insertCell().innerHTML = '<a href="#" onclick="shopDetails(' + data.shops[i].ID + ')"><i class="material-icons">read_more</i></a>';
+                        tr.insertCell().innerHTML = '<a href="#" onclick="shopDetails(' + data.shops[i].ID + ')"><i class="material-icons">read_more</i></a><a href="#" onclick="editShop(' + data.shops[i].ID + ')"><i class="material-icons">edit</i></a><a href="#" onclick="shopDelete(' + data.shops[i].ID + ')"><i class="material-icons">delete</i></a>';
                     }
                 } else {
                     M.toast({html: 'An error occured!'});
@@ -360,7 +359,7 @@ function modalEventsListeners() {
     document.getElementById('modalLogoutYes').addEventListener('click', function () {
         $.ajax({
             type: "POST",
-            url: "/dash/logout",
+            url: apiURL + "/api/logout",
             dataType: "json",
             success: (data) => {
                 if (data.success) {
@@ -374,6 +373,141 @@ function modalEventsListeners() {
     });
     document.getElementById('modalUpdateYes').addEventListener('click', function () {
 
+    });
+    document.getElementById('modalEditProductConfirm').addEventListener('click', function () {
+        let productName = document.getElementById('modalEditProductName');
+        let productBrand = document.getElementById('modalEditProductBrand');
+        let isOK = true;
+
+        if (productName.value === "") {
+            productName.classList.add('invalid');
+            isOK = false;
+        } else {
+            productName.classList.remove('invalid');
+        }
+        if (productBrand.value === "") {
+            productBrand.classList.add('invalid');
+            isOK = false;
+        } else {
+            productBrand.classList.remove('invalid');
+        }
+
+        if (isOK) {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: apiURL + "/api/editproduct",
+                data: {
+                    'productBarcode': document.getElementById('modalEditProductBarcode').value.toString().trim(),
+                    'productName': productName.value.trim(),
+                    'productBrand': productBrand.value.trim(),
+                },
+                success: (data) => {
+                    if (data.status) {
+                        $('#modalEditProduct').modal('close');
+                        M.toast({html: 'Product successfully Edited!'});
+                        document.getElementById('#pList_btn').click();
+                    } else {
+                        M.toast({html: 'An error occurred!\nplease try again'});
+                    }
+                },
+            });
+        }
+
+    });
+    document.getElementById('modalEditShopConfirm').addEventListener('click', function () {
+        let shopName = document.getElementById('modalEditShopName');
+        let shopStreetName = document.getElementById('modalEditShopStreetName');
+        let shopStreetNumber = document.getElementById('modalEditShopStreetNumber');
+        let shopZIP = document.getElementById('modalEditShopZIP');
+        let shopCity = document.getElementById('modalEditShopCity');
+        let isOK = true;
+
+        if (shopName.value === "") {
+            shopName.classList.add('invalid');
+            isOK = false;
+        } else {
+            shopName.classList.remove('invalid');
+        }
+        if (shopStreetName.value === "") {
+            shopStreetName.classList.add('invalid');
+            isOK = false;
+        } else {
+            shopStreetName.classList.remove('invalid');
+        }
+        if (shopStreetNumber.value === "") {
+            shopStreetNumber.classList.add('invalid');
+            isOK = false;
+        } else {
+            shopStreetNumber.classList.remove('invalid');
+        }
+        if (shopZIP.value === "") {
+            shopZIP.classList.add('invalid');
+            isOK = false;
+        } else {
+            shopZIP.classList.remove('invalid');
+        }
+        if (shopCity.value === "") {
+            shopCity.classList.add('invalid');
+            isOK = false;
+        } else {
+            shopCity.classList.remove('invalid');
+        }
+
+        if (isOK) {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: apiURL + "/api/editshop",
+                data: {
+                    'shopID': document.getElementById('modalEditShopID').value.toString().trim(),
+                    'shopName': shopName.value.trim(),
+                    'shopStreetName': shopStreetName.value.trim(),
+                    'shopStreetNumber': shopStreetNumber.value.trim(),
+                    'shopZIP': shopZIP.value.trim(),
+                    'shopCity': shopCity.value.trim()
+                },
+                success: (data) => {
+                    if (data.status) {
+                        $('#modalEditShop').modal('close');
+                        M.toast({html: 'Shop successfully Edited!'});
+                        document.getElementById('#sList_btn').click();
+                    } else {
+                        M.toast({html: 'An error occured!\nplease try again'});
+                    }
+                }
+            });
+        }
+
+    });
+    document.getElementById('modalDeleteConfirm').addEventListener('click', function () {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: apiURL + "/api/datadelete",
+            data: {
+                'type': document.getElementById('modalDeleteType').value.toString().trim(),
+                'identifier': document.getElementById('modalDeleteIdentifier').value.toString().trim()
+            },
+            success: (data) => {
+                if (data.status) {
+                    $('#modalDelete').modal('close');
+                    M.toast({html: 'Data successfully Deleted!'});
+                    switch (data.type) {
+                        case 1:
+                            document.getElementById('#sList_btn').click();
+                            break;
+                        case 2:
+                            document.getElementById('#pList_btn').click();
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    M.toast({html: 'An error occured!\nplease try again'});
+                }
+            }
+        });
     });
 }
 
@@ -492,4 +626,72 @@ function shopDetails(ID) {
             }
         }
     });
+}
+
+function editShop(ID) {
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: apiURL + "/api/shopdetailsedit",
+        data: {
+            'ID': ID.toString().trim()
+        },
+        success: (data) => {
+            if (data.status) {
+                document.getElementById('modalEditShopTitle').innerText = "Edit " + data.Name;
+                document.getElementById('modalEditShopID').value = data.ID;
+                document.getElementById('modalEditShopName').value = data.Name;
+                document.getElementById('modalEditShopNameLabel').classList.add('active');
+                document.getElementById('modalEditShopStreetName').value = data.StreetName;
+                document.getElementById('modalEditShopStreetNameLabel').classList.add('active');
+                document.getElementById('modalEditShopStreetNumber').value = data.StreetNumber;
+                document.getElementById('modalEditShopStreetNumberLabel').classList.add('active');
+                document.getElementById('modalEditShopCity').value = data.City;
+                document.getElementById('modalEditShopCityLabel').classList.add('active');
+                document.getElementById('modalEditShopZIP').value = data.ZIPCode
+                document.getElementById('modalEditShopZIPLabel').classList.add('active');
+                $('#modalEditShop').modal('open');
+            } else {
+                M.toast({html: 'An error occured!<br/>please reload and try again'});
+            }
+        }
+    });
+}
+
+function shopDelete(ID) {
+    document.getElementById('modalDeleteTitle').innerText = "Do you really want to delete this Shop?"
+    document.getElementById('modalDeleteType').value = 1;
+    document.getElementById('modalDeleteIdentifier').value = ID.toString().trim();
+    $('#modalDelete').modal('open');
+}
+
+function editProd(Barcode) {
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: apiURL + "/api/productdetailsedit",
+        data: {
+            'Barcode': Barcode.toString().trim()
+        },
+        success: (data) => {
+            if (data.status) {
+                document.getElementById('modalEditProductTitle').innerText = "Edit " + data.Name;
+                document.getElementById('modalEditProductBarcode').value = data.Barcode;
+                document.getElementById('modalEditProductName').value = data.Name;
+                document.getElementById('modalEditProductNameLabel').classList.add('active');
+                document.getElementById('modalEditProductBrand').value = data.Brand;
+                document.getElementById('modalEditProductBrandLabel').classList.add('active');
+                $('#modalEditProduct').modal('open');
+            } else {
+                M.toast({html: 'An error occured!<br/>please reload and try again'});
+            }
+        }
+    });
+}
+
+function prodDelete(Barcode) {
+    document.getElementById('modalDeleteTitle').innerText = "Do you really want to delete this Product?"
+    document.getElementById('modalDeleteType').value = 2;
+    document.getElementById('modalDeleteIdentifier').value = Barcode.toString().trim();
+    $('#modalDelete').modal('open');
 }

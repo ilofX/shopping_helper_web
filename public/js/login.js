@@ -1,3 +1,8 @@
+const apiProtocol = 'http';
+const apiPort = '3000';
+const apiAddress = 'localhost';
+const apiURL = apiProtocol + "://" + apiAddress + ":" + apiPort;
+
 document.addEventListener('DOMContentLoaded', function () {
 
     // submit button handler
@@ -10,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         $.ajax({
             type: "POST",
-            url: "/login",
+            url: apiURL + "/api/login",
             data: data,
             dataType: "json",
             success: (data) => {
