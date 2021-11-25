@@ -3,11 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const bodyParser = require('body-parser');
-//const redis = require('redis');
-const session = require('express-session');
-//let RedisStore = require('connect-redis')(session);
-//let redisClient = redis.createClient();
+let bodyParser = require('body-parser');
+let session = require('express-session');
 
 var dashRouter = require('./routes/dash');
 var apiRouter = require('./routes/api');
@@ -45,10 +42,10 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false, //change to true with HTTPS
-    sameSite: true,
-    maxAge: 1000 * 60 * 60 * 2// Time is in miliseconds
-  },
+      secure: false, //change to true with HTTPS
+      sameSite: true,
+      maxAge: 1000 * 60 * 60 * 2// Time is in milliseconds
+  }
 }));
 
 /**Allow usage of a reverse proxy*/
